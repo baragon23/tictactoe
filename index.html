@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html ng-app="ticTacToeApp">
+<head>
+	<title>Tic Tac Toe</title>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	<script src="js/angular.min.js"></script>
+	<script src="js/script.js"></script>
+</head>
+<body>
+<div id="container">
+	<div ng-controller="BoardController">
+		<div class="rows" ng-repeat="b in boxes track by $index" ng-click="changeBackground(b, $index)" ng-class="{ 'ex': b.ex, 'oh': b.oh }">
+			
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+#container {
+	width: 640px;
+	height: 629px;
+	margin: 0 auto;
+	margin-top: 30px;
+}
+
+.rows {
+	border: 3px solid black;
+	width: 200px;
+	height: 200px;
+	float: left;
+	margin: 2px;
+}
+
+.ex {
+	background-image: url("../images/x.png");
+	background-repeat: no-repeat;
+	background-size: 90%;
+}
+
+.oh {
+	background-image: url("../images/o.png");
+	background-repeat: no-repeat;
+	background-size: 90%;
+}
+
+.highlight {
+
+}
