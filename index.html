@@ -5,14 +5,18 @@
 	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
 	<script src="js/angular.min.js"></script>
+	<script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>
 	<script src="js/script.js"></script>
 </head>
 <body>
 <div id="container">
 	<div ng-controller="BoardController">
-		<div class="rows" ng-repeat="b in boxes track by $index" ng-click="changeBackground(b, $index)" ng-class="{ 'ex': b.ex, 'oh': b.oh }">
+		<div class="rows" ng-repeat="b in boxes track by $index" ng-click="playGame(b, $index)" ng-class="{ 'ex': b.ex, 'oh': b.oh }">
 			
 		</div>
+		<br />
+		<button type="button" ng-click="resetBoard()">Reset Game</button>
 	</div>
 </div>
 </body>

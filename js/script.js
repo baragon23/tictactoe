@@ -1,6 +1,7 @@
-var ticTacToeApp = angular.module("ticTacToeApp", []);
+var ticTacToeApp = angular.module("ticTacToeApp", ["firebase"]);
 
-ticTacToeApp.controller("BoardController", function($scope) {
+ticTacToeApp.controller("BoardController", function($scope, $firebase) {
+	var fireReference = new Firebase("https://epictictactoe.firebaseio.com");
 	var exTurn = true;
 	var ohTurn = false;
 	var moves = 0;
@@ -36,34 +37,67 @@ ticTacToeApp.controller("BoardController", function($scope) {
 		{ ex: false, oh: false, value: 256 }
 	];
 
-	$scope.changeBackground = function(box, index) {
+	$scope.playGame = function(box, index) {
 		//console.log(box.ex);
 
+		if (moves == 9) {
+			//don't do anything, it's game over
+		}
 		//X's turn to play
-		if (exTurn == true) {
+		else if (exTurn == true && moves < 9) {
 			box.ex = true;
 			exTurn = false;
 			ohTurn = true;
+			moves++;
 
 			score.ex += $scope.boxes[index].value;
-			//console.log($scope.boxes[index].value);
 
 			//check if win for X
 			if (isWin(score.ex)) {
-				alert("X wins");
+				//every box gets X
+				winsFill(true, false);
 			}
 		}
 		//O's turn to play
-		else if (exTurn == false) {
+		else if (exTurn == false && moves < 9) {
 			box.oh = true;
 			ohTurn = false;
 			exTurn = true;
+			moves++;
+
 			score.oh += $scope.boxes[index].value;
 
 			//check if win for O
 			if (isWin(score.oh)) {
-				alert("O wins");
+				//every box gets O
+				winsFill(false, true);
 			}
+		}
+	};
+
+	//called when a winner is determined and fills the
+	//board with all X or all O
+	var winsFill = function(exBool, ohBool) {
+		for (var i = 0; i < $scope.boxes.length; i++) {
+			$scope.boxes[i].ex = exBool;
+			$scope.boxes[i].oh = ohBool;
+		}
+		moves = 9; //stops game from being played
+	};
+
+	//reset the board so we can play again
+	$scope.resetBoard = function() {
+		exTurn = true;
+		ohTurn = false;
+		moves = 0;
+		score = {
+			"ex": 0,
+			"oh": 0 
+		};
+		//loop through boxes array and reset the styles
+		for (var i = 0; i < $scope.boxes.length; i++) {
+			$scope.boxes[i].ex = false;
+			$scope.boxes[i].oh = false;
 		}
 	};
 
@@ -71,7 +105,8 @@ ticTacToeApp.controller("BoardController", function($scope) {
 	//score and returns true or false
 	var isWin = function(score) {
 		for (var i = 0; i < wins.length; i++) {
-			if (wins[i] == score) {
+			if ((wins[i] & score) === wins[i]) {
+				console.log("Weird: " + (wins[i] & score) + " Win array: " + wins[i] + " Score: " + score);
 				return true;
 			}
 		}
