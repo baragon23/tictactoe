@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="container">
-	<div ng-controller="BoardController">
+	<div ng-controller="BoardController" ng-model="boxes">
 		<div class="rows" ng-repeat="b in boxes track by $index" ng-click="playGame(b, $index)" ng-class="{ 'ex': b.ex, 'oh': b.oh }">
 			
 		</div>

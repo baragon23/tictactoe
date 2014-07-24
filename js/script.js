@@ -2,6 +2,7 @@ var ticTacToeApp = angular.module("ticTacToeApp", ["firebase"]);
 
 ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 	var fireReference = new Firebase("https://epictictactoe.firebaseio.com");
+	
 	var exTurn = true;
 	var ohTurn = false;
 	var moves = 0;
@@ -9,6 +10,13 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 		"ex": 0,
 		"oh": 0 
 	};
+
+	$scope.remoteCellList = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteCellList"));
+	$scope.remoteExTurn = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteExTurn"));
+	$scope.remoteOhTurn = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteOhTurn"));
+	$scope.remoteMoves = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteMoves"));
+	$scope.remoteScore = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteScore"));
+
 
 	/*
      *     273                 84
@@ -37,6 +45,8 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 		{ ex: false, oh: false, value: 256 }
 	];
 
+
+
 	$scope.playGame = function(box, index) {
 		//console.log(box.ex);
 
@@ -44,7 +54,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 			//don't do anything, it's game over
 		}
 		//X's turn to play
-		else if (exTurn == true && moves < 9) {
+		else if (exTurn == true) {
 			box.ex = true;
 			exTurn = false;
 			ohTurn = true;
@@ -59,7 +69,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 			}
 		}
 		//O's turn to play
-		else if (exTurn == false && moves < 9) {
+		else {
 			box.oh = true;
 			ohTurn = false;
 			exTurn = true;
@@ -105,11 +115,30 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 	//score and returns true or false
 	var isWin = function(score) {
 		for (var i = 0; i < wins.length; i++) {
+			//bitwise operator returns what matches in the binary 'slots' for each number
 			if ((wins[i] & score) === wins[i]) {
-				console.log("Weird: " + (wins[i] & score) + " Win array: " + wins[i] + " Score: " + score);
+				console.log("Weird: " + (wins[i] & score) + " Win array: " + wins[i] + " score: " + score);
 				return true;
 			}
 		}
 		return false;
 	}
+
+	$scope.remoteCellList.$bind($scope, "boxes");
+	$scope.remoteExTurn.$bind($scope, "exTurn");
+	$scope.remoteOhTurn.$bind($scope, "ohTurn");
+	$scope.remoteMoves.$bind($scope, "moves");
+	$scope.remoteScore.$bind($scope, "score");
+
+	$scope.$watch('boxes', function() {});
+	$scope.$watch('exTurn', function() {});
+	$scope.$watch('ohTurn', function() {});
+	$scope.$watch('moves', function() {});
+	$scope.$watch('score', function() {});
+
+	//$scope.clickCounter.$set({clickCounter: $scope.clickCount});
 });
+
+
+
+
