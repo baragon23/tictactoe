@@ -3,10 +3,10 @@ var ticTacToeApp = angular.module("ticTacToeApp", ["firebase"]);
 ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 	var fireReference = new Firebase("https://epictictactoe.firebaseio.com");
 	
-	var exTurn = true;
-	var ohTurn = false;
-	var moves = 0;
-	var score = {
+	$scope.exTurn = true;
+	$scope.ohTurn = false;
+	$scope.moves = 0;
+	$scope.score = {
 		"ex": 0,
 		"oh": 0 
 	};
@@ -48,22 +48,22 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 
 
 	$scope.playGame = function(box, index) {
-		//console.log(box.ex);
+		// console.log(box.ex);
 
-		if (moves == 9) {
-			//don't do anything, it's game over
+		if ($scope.moves == 9) {
+			// don't do anything, it's game over
 		}
-		//X's turn to play
-		else if (exTurn == true) {
+		// X's turn to play
+		else if ($scope.exTurn == true) {
 			box.ex = true;
-			exTurn = false;
-			ohTurn = true;
-			moves++;
+			$scope.exTurn = false;
+			$scope.ohTurn = true;
+			$scope.moves++;
 
-			score.ex += $scope.boxes[index].value;
+			$scope.score.ex += $scope.boxes[index].value;
 
 			//check if win for X
-			if (isWin(score.ex)) {
+			if (isWin($scope.score.ex)) {
 				//every box gets X
 				winsFill(true, false);
 			}
@@ -71,14 +71,16 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 		//O's turn to play
 		else {
 			box.oh = true;
-			ohTurn = false;
-			exTurn = true;
-			moves++;
+			$scope.ohTurn = false;
+			$scope.exTurn = true;
+			$scope.moves++;
 
-			score.oh += $scope.boxes[index].value;
+			$scope.score.oh += $scope.boxes[index].value;
+			//console.log($scope.score.oh);
+			//var ohScore = $scope.score.oh;
 
 			//check if win for O
-			if (isWin(score.oh)) {
+			if (isWin($scope.score.oh)) {
 				//every box gets O
 				winsFill(false, true);
 			}
@@ -92,15 +94,15 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 			$scope.boxes[i].ex = exBool;
 			$scope.boxes[i].oh = ohBool;
 		}
-		moves = 9; //stops game from being played
+		$scope.moves = 9; //stops game from being played
 	};
 
 	//reset the board so we can play again
 	$scope.resetBoard = function() {
-		exTurn = true;
-		ohTurn = false;
-		moves = 0;
-		score = {
+		$scope.exTurn = true;
+		$scope.ohTurn = false;
+		$scope.moves = 0;
+		$scope.score = {
 			"ex": 0,
 			"oh": 0 
 		};
@@ -117,7 +119,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 		for (var i = 0; i < wins.length; i++) {
 			//bitwise operator returns what matches in the binary 'slots' for each number
 			if ((wins[i] & score) === wins[i]) {
-				console.log("Weird: " + (wins[i] & score) + " Win array: " + wins[i] + " score: " + score);
+				//console.log("Weird: " + (wins[i] & $scope.score) + " Win array: " + wins[i] + " score: " + $scope.score);
 				return true;
 			}
 		}

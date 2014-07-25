@@ -1,8 +1,29 @@
+@-webkit-keyframes animatedBackground {
+	from { background-position: 0 0; }
+	to { background-position: 100% 0; }
+}
+
+#animate-clouds	{ 
+	width: 100%; 
+	height: 150px;
+	position: absolute;
+	z-index: 100;
+	background-image: url('../images/clouds.jpg');
+	background-size: 3568px;
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	
+
+	-webkit-animation: animatedBackground 15s linear infinite;
+}
+
 #container {
 	width: 440px;
 	height: 440px;
 	margin: 0 auto;
-	margin-top: 30px;
+
+	position: relative;
+	z-index: 300;
 }
 
 .rows {
@@ -26,19 +47,5 @@
 	background-size: 90%;
 }
 
-@-webkit-keyframes animatedBackground {
-	from { background-position: 0 0; }
-	to { background-position: 100% 0; }
-}
 
-#animate-clouds	{ 
-	width: 100%; 
-	height: 150px; 
-	background-image: url('../images/clouds.jpg');
-	background-position: 0px 0px;
-	background-repeat: repeat-x;
-	
-
-	-webkit-animation: animatedBackground 2s linear infinite;
-}
 
