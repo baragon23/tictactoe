@@ -3,19 +3,23 @@ var ticTacToeApp = angular.module("ticTacToeApp", ["firebase"]);
 ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 	var fireReference = new Firebase("https://epictictactoe.firebaseio.com");
 	
-	$scope.exTurn = true;
-	$scope.ohTurn = false;
-	$scope.moves = 0;
-	$scope.score = {
-		"ex": 0,
-		"oh": 0 
-	};
-
 	$scope.remoteCellList = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteCellList"));
 	$scope.remoteExTurn = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteExTurn"));
 	$scope.remoteOhTurn = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteOhTurn"));
 	$scope.remoteMoves = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteMoves"));
 	$scope.remoteScore = $firebase(new Firebase("https://epictictactoe.firebaseio.com" + "/remoteScore"));
+
+
+	$scope.exTurn = true;
+	$scope.ohTurn = false;
+	$scope.gameMoves = 0;
+
+	console.log($scope.gameMoves);
+	$scope.score = {
+		"ex": 0,
+		"oh": 0 
+	};
+
 
 
 	/*
@@ -45,12 +49,21 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 		{ ex: false, oh: false, value: 256 }
 	];
 
+	$scope.remoteCellList.$bind($scope, "boxes");
+	$scope.remoteExTurn.$bind($scope, "exTurn");
+	$scope.remoteOhTurn.$bind($scope, "ohTurn");
+	$scope.remoteMoves.$bind($scope, "gameMoves");
+	$scope.remoteScore.$bind($scope, "score");
 
+	$scope.remoteMoves.$set({gameMoves: 0});
+	//$scope.clickCounter.$set({clickCounter: $scope.clickCount}) ;
+
+	$scope.$watch('boxes', function() {});
 
 	$scope.playGame = function(box, index) {
-		// console.log(box.ex);
+		console.log(box.ex);
 
-		if ($scope.moves == 9) {
+		if ($scope.gameMoves == 9) {
 			// don't do anything, it's game over
 		}
 		// X's turn to play
@@ -58,7 +71,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 			box.ex = true;
 			$scope.exTurn = false;
 			$scope.ohTurn = true;
-			$scope.moves++;
+			$scope.gameMoves++;
 
 			$scope.score.ex += $scope.boxes[index].value;
 
@@ -73,7 +86,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 			box.oh = true;
 			$scope.ohTurn = false;
 			$scope.exTurn = true;
-			$scope.moves++;
+			$scope.gameMoves++;
 
 			$scope.score.oh += $scope.boxes[index].value;
 			//console.log($scope.score.oh);
@@ -94,14 +107,14 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 			$scope.boxes[i].ex = exBool;
 			$scope.boxes[i].oh = ohBool;
 		}
-		$scope.moves = 9; //stops game from being played
+		$scope.gameMoves = 9; //stops game from being played
 	};
 
 	//reset the board so we can play again
 	$scope.resetBoard = function() {
 		$scope.exTurn = true;
 		$scope.ohTurn = false;
-		$scope.moves = 0;
+		$scope.gameMoves = 0;
 		$scope.score = {
 			"ex": 0,
 			"oh": 0 
@@ -126,17 +139,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 		return false;
 	}
 
-	$scope.remoteCellList.$bind($scope, "boxes");
-	$scope.remoteExTurn.$bind($scope, "exTurn");
-	$scope.remoteOhTurn.$bind($scope, "ohTurn");
-	$scope.remoteMoves.$bind($scope, "moves");
-	$scope.remoteScore.$bind($scope, "score");
 
-	$scope.$watch('boxes', function() {});
-	$scope.$watch('exTurn', function() {});
-	$scope.$watch('ohTurn', function() {});
-	$scope.$watch('moves', function() {});
-	$scope.$watch('score', function() {});
 
 	//$scope.clickCounter.$set({clickCounter: $scope.clickCount});
 });
