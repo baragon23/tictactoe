@@ -106,7 +106,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 	//board with all X or all O
 	var winsFill = function(exBool, ohBool) {
 		
-		for (var i = 0; i < $scope.boxes.length; i++) {
+		for (var i = 0; i < 9; i++) {
 			console.log("someone won");
 			$scope.boxes[i].ex = exBool;
 			$scope.boxes[i].oh = ohBool;
@@ -143,11 +143,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 		return false;
 	}
 
-
-
-	//$scope.clickCounter.$set({clickCounter: $scope.clickCount});
 });
-
 
 
 
