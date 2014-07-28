@@ -56,6 +56,8 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 	$scope.remoteScore.$bind($scope, "score");
 
 	$scope.remoteMoves.$set({gameMoves: 0});
+	$scope.remoteExTurn.$set({exTurn: 0});
+	$scope.remoteOhTurn.$set({ohTurn: 0});
 	//$scope.clickCounter.$set({clickCounter: $scope.clickCount}) ;
 
 	$scope.$watch('boxes', function() {});
@@ -103,7 +105,9 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 	//called when a winner is determined and fills the
 	//board with all X or all O
 	var winsFill = function(exBool, ohBool) {
+		
 		for (var i = 0; i < $scope.boxes.length; i++) {
+			console.log("someone won");
 			$scope.boxes[i].ex = exBool;
 			$scope.boxes[i].oh = ohBool;
 		}
@@ -120,7 +124,7 @@ ticTacToeApp.controller("BoardController", function($scope, $firebase) {
 			"oh": 0 
 		};
 		//loop through boxes array and reset the styles
-		for (var i = 0; i < $scope.boxes.length; i++) {
+		for (var i = 0; i < 9; i++) {
 			$scope.boxes[i].ex = false;
 			$scope.boxes[i].oh = false;
 		}
